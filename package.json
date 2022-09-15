@@ -1,0 +1,20 @@
+{
+  "name": "dashboard-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuliaMorokina/dashboard-api.git"
+  },
+  "author": "Julia Morokina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JuliaMorokina/dashboard-api/issues"
+  },
+  "homepage": "https://github.com/JuliaMorokina/dashboard-api#readme"
+}
