@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { BaseCotroller } from "../common/base.controller";
 import { IControllerRoute } from "../common/route.interface";
+import { HTTPError } from "../errors/http-error.class";
 import { LoggerService } from "../logger/logger.service";
 
 export class UsersController extends BaseCotroller {
