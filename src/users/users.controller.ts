@@ -1,9 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import { inject, injectable } from "inversify";
 import { BaseCotroller } from "../common/base.controller";
 import { IControllerRoute } from "../common/route.interface";
-import { HTTPError } from "../errors/http-error.class";
-import { LoggerService } from "../logger/logger.service";
+import { ILogger } from "../logger/logger.interface";
+import { TYPES } from "../types";
+import "reflect-metadata";
 
+@injectable()
 export class UsersController extends BaseCotroller {
   private routes: IControllerRoute[] = [
     {
@@ -18,8 +21,8 @@ export class UsersController extends BaseCotroller {
     }
   ];
 
-  constructor(logger: LoggerService) {
-    super(logger);
+  constructor(@inject(TYPES.ILogger) private loggerService: ILogger) {
+    super(loggerService);
     this.bindRoutes(this.routes);
   }
 
