@@ -8,6 +8,7 @@ import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegistrationDto } from './dto/user-registration.dto';
 import { TYPES } from '../types';
 import 'reflect-metadata';
+import { User } from './user.entity';
 
 @injectable()
 export class UsersController extends BaseCotroller implements IUserController {
@@ -29,13 +30,17 @@ export class UsersController extends BaseCotroller implements IUserController {
 		this.bindRoutes(this.routes);
 	}
 
-	login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
-		console.log(req.body);
+	login({ body }: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
 		this.ok(res, 'Success');
 	}
 
-	registration(req: Request<{}, {}, UserRegistrationDto>, res: Response, next: NextFunction): void {
-		console.log(req.body);
-		this.send(res, 201, 'Success registration');
+	async registration(
+		{ body }: Request<{}, {}, UserRegistrationDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const newUser = new User(body.email, body.name);
+		await newUser.setPassword(body.password);
+		this.send(res, 201, newUser);
 	}
 }
