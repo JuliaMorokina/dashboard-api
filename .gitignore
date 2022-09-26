@@ -2,3 +2,7 @@
 /dist
 /.vscode
 /.clinic
+
+.env
+prisma/dev.db-journal
+prisma/dev.db

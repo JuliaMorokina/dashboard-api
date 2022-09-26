@@ -24,6 +24,7 @@
 	},
 	"homepage": "https://github.com/JuliaMorokina/dashboard-api#readme",
 	"dependencies": {
+		"@prisma/client": "^4.3.1",
 		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.20.0",
 		"class-transformer": "^0.5.1",
@@ -44,6 +45,7 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"nodemon": "^2.0.20",
 		"prettier": "^2.7.1",
+		"prisma": "^4.3.1",
 		"ts-node": "^10.9.1",
 		"typescript": "^4.8.3"
 	}
