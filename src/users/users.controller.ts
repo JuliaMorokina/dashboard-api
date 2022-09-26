@@ -9,6 +9,9 @@ import { UserRegistrationDto } from './dto/user-registration.dto';
 import { TYPES } from '../types';
 import 'reflect-metadata';
 import { User } from './user.entity';
+import { UserService } from './users.service';
+import { HTTPError } from '../errors/http-error.class';
+import { ValidateMiddleware } from '../common/validate.middleware';
 
 @injectable()
 export class UsersController extends BaseCotroller implements IUserController {
@@ -21,11 +24,15 @@ export class UsersController extends BaseCotroller implements IUserController {
 		{
 			func: this.registration,
 			method: 'post',
+			middleware: [new ValidateMiddleware(UserRegistrationDto)],
 			path: '/registration',
 		},
 	];
 
-	constructor(@inject(TYPES.ILogger) private loggerService: ILogger) {
+	constructor(
+		@inject(TYPES.ILogger) private loggerService: ILogger,
+		@inject(TYPES.UserService) private userService: UserService,
+	) {
 		super(loggerService);
 		this.bindRoutes(this.routes);
 	}
@@ -39,8 +46,10 @@ export class UsersController extends BaseCotroller implements IUserController {
 		res: Response,
 		next: NextFunction,
 	): Promise<void> {
-		const newUser = new User(body.email, body.name);
-		await newUser.setPassword(body.password);
-		this.send(res, 201, newUser);
+		const result = await this.userService.createUser(body);
+		if (!result) {
+			return next(new HTTPError(422, 'Такой пользователь уже существует'));
+		}
+		this.send(res, 201, { email: result.email });
 	}
 }
