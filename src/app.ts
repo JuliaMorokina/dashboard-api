@@ -7,6 +7,7 @@ import { ILogger } from './logger/logger.interface';
 import { UsersController } from './users/users.controller';
 import { TYPES } from './types';
 import 'reflect-metadata';
+import { PrismaService } from './database/prisma.service';
 
 @injectable()
 export class App {
@@ -18,6 +19,7 @@ export class App {
 		@inject(TYPES.ILogger) private logger: ILogger,
 		@inject(TYPES.UsersController) private usersController: UsersController,
 		@inject(TYPES.ExeptionFilter) private exeptionFilter: ExeptionFilter,
+		@inject(TYPES.PrismaService) private prismaService: PrismaService,
 	) {
 		this.app = express();
 		this.port = 8000;
@@ -39,6 +41,8 @@ export class App {
 		this.useMiddleware();
 		this.useRoutes();
 		this.useExeptionsFilters();
+		await this.prismaService.connect();
+
 		this.server = this.app.listen(this.port);
 		this.logger.log('server listeting');
 	}
