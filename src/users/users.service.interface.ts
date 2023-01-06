@@ -7,3 +7,4 @@ export interface IUserService {
 	validateUser: (dto: UserLoginDto) => Promise<boolean>;
 	getUserInfo: (email: string) => Promise<UserModel | null>
 }
+

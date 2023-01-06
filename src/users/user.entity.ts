@@ -28,3 +28,4 @@ export class User {
 		return compare(pass, this._passwors);
 	}
 }
+

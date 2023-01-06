@@ -40,3 +40,4 @@ function bootstrap(): IBootstrap {
 }
 
 export const { app, appContainer } = bootstrap();
+

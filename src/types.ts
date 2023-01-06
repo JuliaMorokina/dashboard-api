@@ -8,3 +8,4 @@ export const TYPES = {
 	UsersRepository: Symbol.for('UsersRepository'),
 	UserService: Symbol.for('UserService'),
 };
+

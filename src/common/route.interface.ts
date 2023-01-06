@@ -9,3 +9,4 @@ export interface IControllerRoute {
 }
 
 export type ExpressReturnType = Response<any, Record<string, any>>;
+
