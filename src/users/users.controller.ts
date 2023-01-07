@@ -80,19 +80,20 @@ export class UsersController extends BaseCotroller implements IUserController {
 
 	private singJWT(email: string, secret: string): Promise<string> {
 		return new Promise<string>((resolve, reject) => {
-			sign({
-				email,
-				iat: Math.floor(Date.now() / 1000)
-			},
+			sign(
+				{
+					email,
+					iat: Math.floor(Date.now() / 1000),
+				},
 				secret,
-				{ algorithm: "HS256" },
+				{ algorithm: 'HS256' },
 				(error, token) => {
 					if (error) {
 						reject(error);
 					}
 					resolve(token as string);
-				})
-		})
+				},
+			);
+		});
 	}
 }
-
