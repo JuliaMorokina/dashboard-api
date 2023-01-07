@@ -7,6 +7,9 @@ import { ILogger } from './logger/logger.interface';
 import { UsersController } from './users/users.controller';
 import { TYPES } from './types';
 import 'reflect-metadata';
+import { PrismaService } from './database/prisma.service';
+import { AuthMiddleware } from './common/auth.middleware';
+import { ConfigService } from './config/config.service';
 
 @injectable()
 export class App {
@@ -18,6 +21,8 @@ export class App {
 		@inject(TYPES.ILogger) private logger: ILogger,
 		@inject(TYPES.UsersController) private usersController: UsersController,
 		@inject(TYPES.ExeptionFilter) private exeptionFilter: ExeptionFilter,
+		@inject(TYPES.PrismaService) private prismaService: PrismaService,
+		@inject(TYPES.ConfigService) private configService: ConfigService,
 	) {
 		this.app = express();
 		this.port = 8000;
@@ -25,6 +30,8 @@ export class App {
 
 	useMiddleware(): void {
 		this.app.use(json());
+		const authMiddleware = new AuthMiddleware(this.configService.get('SECRET'));
+		this.app.use(authMiddleware.execute.bind(authMiddleware));
 	}
 
 	useRoutes(): void {
@@ -39,7 +46,13 @@ export class App {
 		this.useMiddleware();
 		this.useRoutes();
 		this.useExeptionsFilters();
+		await this.prismaService.connect();
+
 		this.server = this.app.listen(this.port);
 		this.logger.log('server listeting');
+	}
+
+	public close(): void {
+		this.server.close();
 	}
 }
